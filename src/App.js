@@ -1,105 +1,78 @@
 /** @format */
 
 import './App.css'
-import CreateNodeModal from './CreateNodeModal'
-import React, { useState, useEffect, useRef } from 'react'
-import Cytoscape from 'cytoscape'
-import CytoscapeComponent from 'react-cytoscapejs'
-import COSEBilkent from 'cytoscape-cose-bilkent'
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from "react-redux";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFan, faClose } from '@fortawesome/free-solid-svg-icons'
+import { Flows } from './Flows'
+import { setNodeName, setNodeBg, setEdgeStyle } from './Store/Actions'
 
-Cytoscape.use(COSEBilkent)
 
 function App() {
-	const elements = [
-		{ data: { id: 'root', label: '개발자로 취업하기', type: 'root' } },
-		{ data: { id: 'two', label: '기술면접', type: 'dep1' } },
-		{ data: { id: 'three', label: '코딩테스트', type: 'dep1' } },
-		{ data: { id: 'four', label: '포트폴리오', type: 'dep1' } },
-		{ data: { id: 'five', label: '기술스택', type: 'dep1' } },
-		{ data: { id: 'six', label: '알고리즘', type: 'dep2' } },
-		{ data: { id: 'seven', label: '코드스테이츠', type: 'dep2' } },
-		{ data: { id: 'eight', label: '리액트', type: 'dep3' } },
-		{
-			data: {
-				source: 'root',
-				target: 'two',
-				label: 'Edge from Root to two',
-			},
-		},
-	]
-	const [isModalOpen, setIsModalOpen] = useState(false)
-	const [nodes, setNodes] = useState(elements)
-	const [selectedNodes, setSelectedNodes] = React.useState([])
+  const dispatch = useDispatch()
+  const { nodeName, nodeBg, edgeStyle } = useSelector(state => state);
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
-	const cy = React.useRef()
-	React.useEffect(() => {
-		if (cy.current) {
-			window.cy = cy.current
-			cy.current.off('taphold', 'node').on('taphold', 'node', (e) => {
-				console.log('clicked', e.target.id())
+  const nodeChangeHandler = () => {
 
-				setSelectedNodes(Array.from(new Set([...selectedNodes, { name: e.target.id(), id: e.target.id() }])))
-			})
-		}
-	}, [nodes, cy])
+  }
+
+  const nodeBgChangeHandler = (e) => {
+    dispatch(setNodeBg(e.target.id))
+  }
+
+  const edgeStyleChangeHandler = (e) => {
+    dispatch(setEdgeStyle(e.target.id))
+  }
 
 	return (
 		<div className='App'>
-			<header className='header'>What's in your mind?</header>
+			<header className='header'>
+				<h1>
+					<FontAwesomeIcon icon={faFan} spin /> <span className='title'>Flows</span>
+				</h1>
+			</header>
 			<div className='container'>
-				<CytoscapeComponent
-					layout={{ name: 'cose-bilkent' }}
-					cy={(ref) => {
-						cy.current = ref
-					}}
-					elements={nodes}
-					stylesheet={[
-						{
-							selector: 'node[type="root"]',
-							style: {
-								'background-color': '#FFC090',
-								label: 'data(label)',
-							},
-						},
-						{
-							selector: 'node[type="dep1"]',
-							style: {
-								'background-color': '#7FB77E',
-								label: 'data(label)',
-							},
-						},
-						{
-							selector: 'node[type="dep2"]',
-							style: {
-								'background-color': '#B1D7B4',
-								label: 'data(label)',
-							},
-						},
-						{
-							selector: 'node[type="dep3"]',
-							style: {
-								'background-color': '#F7F6DC',
-								label: 'data(label)',
-							},
-						},
-						{
-							selector: 'edge',
-							style: {
-								width: 1,
-								'line-color': '#F7F6DC',
-								'target-arrow-color': '#F7F6DC',
-								'target-arrow-shape': 'triangle',
-								'curve-style': 'bezier',
-							},
-						},
-					]}
-					style={{
-						width: '100%',
-						height: '100%',
-					}}
-				/>
+				<Flows setIsModalOpen={setIsModalOpen} />
 			</div>
-			{/* {isModalOpen ? <CreateNodeModal /> : null} */}
+			<div className={`modal${isModalOpen ? ' active' : ''}`}>
+				<div className='modal-dimmed' onClick={() => {setIsModalOpen(false)}}></div>
+				<div className='modal-contents'>
+          <i className="close" onClick={() => {setIsModalOpen(false)}}><FontAwesomeIcon icon={faClose} /></i>
+					<div className='form-row'>
+						<label className='label'>Name</label>
+						<div className="form-group">
+              <input type="text" value={nodeName} onChange={(e) => dispatch(setNodeName(e.target.value))} />
+            </div>
+					</div>
+					<div className='form-row'>
+						<label className='label'>Background Color</label>
+            <div className="form-group">
+						  <input type="radio" name="nodeBg" id="nodeBg1" onClick={(e) => nodeBgChangeHandler(e)} />
+              <label htmlFor="nodeBg1">Bg Color Style 1</label>
+						  <input type="radio" name="nodeBg" id="nodeBg2" onClick={(e) => nodeBgChangeHandler(e)} />
+              <label htmlFor="nodeBg2">Bg Color Style 2</label>
+						  <input type="radio" name="nodeBg" id="nodeBg3" onClick={(e) => nodeBgChangeHandler(e)} />
+              <label htmlFor="nodeBg3">Bg Color Style 3</label>
+            </div>
+					</div>
+					<div className='form-row'>
+						<label className='label'>Edge Style</label>
+            <div className="form-group">
+						  <input type="radio" name="edgeStyle" id="edgeStyle1" onClick={(e) => edgeStyleChangeHandler(e)} />
+              <label htmlFor="edgeStyle1">Edge Style 1</label>
+						  <input type="radio" name="edgeStyle" id="edgeStyle2" onClick={(e) => edgeStyleChangeHandler(e)} />
+              <label htmlFor="edgeStyle2">Edge Style 2</label>
+						  <input type="radio" name="edgeStyle" id="edgeStyle3" onClick={(e) => edgeStyleChangeHandler(e)} />
+              <label htmlFor="edgeStyle3">Edge Style 31</label>
+            </div>
+					</div>
+          <div className='form-row'>
+            <button className="form-node-change" onClick={nodeChangeHandler}>Save</button>
+          </div>
+				</div>
+			</div>
 		</div>
 	)
 }

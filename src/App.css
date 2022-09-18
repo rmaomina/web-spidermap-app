@@ -1,19 +1,178 @@
+/** @format */
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Serif:opsz,wght@8..144,600&display=swap');
-* {
-  font-family: 'Roboto Serif', serif;
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.5/dist/web/static/pretendard-dynamic-subset.css");
+
+:root {
+  --primary: #1c6758;
+  --white: #fff;
+
+  --node-dep1: #1c6758;
+  --node-dep2: #357560;
+  --node-dep3: #4e8468;
+  --node-dep4: #689270;
+  --node-dep5: #81a178;
+  --node-dep6: #9aaf80;
+  --node-dep7: #b3be88;
+  --node-dep8: #cdcc90;
+  --node-dep9: #e6db98;
+  --node-dep10: #ffe9a0;
+
+  --header-height: 70px;
+  --pretendard: 'Pretendard', '돋움', Dotum, '굴림', Gulim, Helvetica, sans-serif;
+  --roboto: 'Roboto Serif', serif;
+}
+
+body {
+  margin: 0;
+	padding: 0;
+  font-family: var(--pretendard);
+  color: var(--primary);
 }
 
 .header {
-  height: 80px;
-  width: 100%;
-  background-color: #111;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #fff;
+	width: 100%;
+  height: var(--header-height);
+	background-color: #111;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+  background-color: var(--primary);
+	color: var(--white);
+}
+
+.header h1 {
+	padding: .55rem 0;
+	font-size: 1.2rem;
+}
+
+.header h1 .title {
+	display: inline-block;
+	margin-left: 1rem;
 }
 
 .container {
-  height: calc(100vh - 80px);
+  height: calc(100vh - var(--header-height));
+  width: 100%;
+}
+
+.flow-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+[class^="node"] {
+  min-height: 2rem;
+  border: 1px solid;
+  text-align: center;
+  background-color: var(--white);
+}
+
+[class^="node"].circle {
+  border-radius: 0.3rem;
+  border-color: var(--node-dep2);
+}
+
+[class^="node"].square {
+  border-color: var(--node-dep4);
+}
+
+.modal {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 99;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal.active {
+  display: flex;
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-dimmed {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: rgba(0,0,0,10%);
+}
+.modal.active .modal-dimmed {
+  display: block;
+}
+
+.modal-contents {
+  display: flex;
+  flex-flow: column nowrap;
+  position: relative;
+  min-width: 500px;
+  min-height: 100px;
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+  background-color: #fff;
+  box-shadow: 1px 1px 15px rgb(0 0 0 / 5%);
+  z-index: 999;
+}
+
+.modal-contents .close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.form-row {
+  width: 100%;
+  padding: 1rem 0;
+  color: #111;
+}
+
+.form-row .label {
+  display: block;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  font-size: .8rem;
+}
+
+.form-row .form-group input[type="text"] {
+  display: block;
+  width: 100%;
+  padding: .4rem 1rem;
+  box-sizing: border-box;
+}
+
+.form-row .form-group input[type="radio"] + label {
+  margin-right: 1rem;
+}
+.form-row .form-group input[type="radio"]:checked + label {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.form-row > button {
+  width: 100%;
+  padding: 0.6rem;
+  border: 2px solid var(--primary);
+  background-color: transparent;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  color: var(--primary);
+  will-change: background-color;
+  transition: background-color .5s;
+  cursor: pointer;
+}
+.form-row > button:hover {
+  background-color: var(--primary);
+  color: var(--white);
 }
