@@ -1,70 +1,46 @@
-# Getting Started with Create React App
+# 🕸 SpiderMap 🕷
+흐름도를 그려볼 수 있는 마인드맵을 어플리케이션입니다. 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 👍 이렇게 쓰면 좋아요. 
+> 복잡한 구조나 흐름을 쉽게 그려보고, 브레인스토밍이 필요할 때 아이디어 보드로 활용해 보세요!
 
-## Available Scripts
+## 📍 URL
+<!-- [링크]() -->
 
-In the project directory, you can run:
+## 🎯 주요 기능 
+### 마인드 맵
+- 트리 그래프 형식의 마인드 맵을 그릴 수 있습니다. 
+- 노드의 핸들을 Drag & Drop 하면 새로운 노드가 생성됩니다. 
+- 노드를 클릭하면 수정할 수 있습니다. (노드 이름, 배경 컬러, 엣지 스타일)
+- 작성한 플로우를 다운로드 받을 수 있습니다. (advanced)
 
-### `npm start`
+## 🕹 기술 스택
+`React` `Redux Toolkit`
+`React Flow library` 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 👩‍💻 개발 일지 
+- 2022/9/16
+  - 개인 포트폴리오 직접 만들기 과제를 진행하며 마인드맵 어플리케이션을 구상했습니다. 
+  - [기획 초기 Figma](https://www.figma.com/file/wQest078DU9Wm88PEvrvSQ/app-flows?node-id=0%3A1)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- 2022/9/18
+  - 기존 MindMap에서 SpiderMap로 기획을 변경 했습니다. 
+  - 화면을 디자인하고, [React flow](https://reactflow.dev/) 라이브러리를 추가했습니다. 
 
-### `npm test`
+- 2022/9/19
+  - Redux toolkit을 프로젝트에 적용했습니다. 
+  - Spidermap 이름을 붙이고 디자인을 수정했습니다.🤗
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 이슈
 
-### `npm run build`
+### 1) 험난한 Redux 복습 과정 
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+🕸 SpiderMap에서 관리되는 상태는 크게 노드들과 엣지(노드 연결선)이 있다. 노드를 추가하는 것은 Flow 라이브러리에서 제공하는
+AddNodeOnEdgeDrop 컴포넌트 예시로 쉽게 추가할 수 있었다. 문제는, 수정과 삭제가 이루어지는 모달 컴포넌트로 노드(이름, 배경색)와 엣지(라인 스타일), setState를 전달하는 과정에서 과한 props 전달과 상태 끌어올리기에 의구심이 들었다. 
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+> 결론적으로, 프로젝트에서 관리하는 state는 노드와 엣지, 모두 라이브러리에서 제공하는 state로 관리되기 때문에, 
+> store를 사용하기 위해 Flow 라이브러리에서 제공하는 API를 사용해 적용이 필요함을 알았다. 
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+처음엔 모든 설정이 담긴 노드와 엣지를 전역에서 React-Redux로 관리하고자 했다. 
+프로젝트에 적용하는 것은 처음이라 복습하는 과정에서 서칭을 하다가 좀 더 간편하면서 불필요한 코드를 
+줄일 수 있는 React Toolkit을 추가적으로 학습했다. 
