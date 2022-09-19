@@ -4,9 +4,8 @@ import './App.css'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFan, faClose } from '@fortawesome/free-solid-svg-icons'
-import { Flows } from './Flows'
-import { setNodeName, setNodeBg, setEdgeStyle } from './Store/Actions'
+import { faClose, faSpider } from '@fortawesome/free-solid-svg-icons'
+import { SpiderMap } from './SpiderMap'
 
 
 function App() {
@@ -19,22 +18,22 @@ function App() {
   }
 
   const nodeBgChangeHandler = (e) => {
-    dispatch(setNodeBg(e.target.id))
+    dispatch()
   }
 
   const edgeStyleChangeHandler = (e) => {
-    dispatch(setEdgeStyle(e.target.id))
+    dispatch()
   }
 
 	return (
 		<div className='App'>
 			<header className='header'>
 				<h1>
-					<FontAwesomeIcon icon={faFan} spin /> <span className='title'>Flows</span>
+					<FontAwesomeIcon icon={faSpider} /> <span className='title'>Spider Map</span>
 				</h1>
 			</header>
 			<div className='container'>
-				<Flows setIsModalOpen={setIsModalOpen} />
+				<SpiderMap setIsModalOpen={setIsModalOpen} />
 			</div>
 			<div className={`modal${isModalOpen ? ' active' : ''}`}>
 				<div className='modal-dimmed' onClick={() => {setIsModalOpen(false)}}></div>
@@ -43,7 +42,7 @@ function App() {
 					<div className='form-row'>
 						<label className='label'>Name</label>
 						<div className="form-group">
-              <input type="text" value={nodeName} onChange={(e) => dispatch(setNodeName(e.target.value))} />
+              <input type="text" value={nodeName} onChange={(e) => dispatch()} />
             </div>
 					</div>
 					<div className='form-row'>
